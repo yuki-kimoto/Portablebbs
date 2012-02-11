@@ -1,4 +1,6 @@
 #!/usr/bin/env perl
+use FindBin;
+use lib "$FindBin::Bin/extlib/perl5/lib";
 use Mojo::Base -strict;
 
 use File::Basename 'dirname';

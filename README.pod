@@ -1,0 +1,61 @@
+=head1 NAME
+
+  Portable BBS
+
+=head2 DESCRIPTION
+
+C<Portable BBS> is simple web application example which have following features.
+
+=over 2
+
+=item * Web framework is Mojolicious
+
+=item * Database is SQLite
+
+=item * O/R mapper is DBIx::Custom
+
+=item * Easy setup system by Test::ModuleVersion
+
+=back
+
+What you can learn from this application?
+
+=over 2
+
+=item * Mojolicious frame work. routing, template, and controller
+
+=item * SQLite
+
+=item * DBIx::Custom
+
+=item * How to use Test::ModuleVersion to create portable web application
+
+=back
+
+=head1 Setup
+
+Install some moudles.
+
+  $ perl t/module.t list | cpanm -L extlib
+
+=head1 Application start and stop
+
+=head Start application
+
+  $ extlib/bin/hypnotoad script/portablebbs
+
+Application start in backend. Port number is C<8080> by default.
+
+=head2 Restart application
+
+Restart is same command as start command
+
+  $ extlib/bin/hypnotoad script/portablebbs
+
+=head2 Stop application
+
+You can stop application by C<--stop> option.
+
+  $ extlib/bin/hypnotoad script/portablebbs --stop
+
+=cut
