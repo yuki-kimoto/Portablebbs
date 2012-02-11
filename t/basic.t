@@ -6,4 +6,4 @@ use Test::Mojo;
 use_ok 'Portablebbs';
 
 my $t = Test::Mojo->new('Portablebbs');
-$t->get_ok('/')->status_is(200)->content_like(qr/Mojolicious/i);
+$t->get_ok('/');
