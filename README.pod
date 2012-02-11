@@ -36,7 +36,7 @@ C<Portable BBS> is simple web application example which have following features.
 
 Install some moudles.
 
-  $ perl t/module.t list | cpanm -L extlib
+  $ perl t/module.t list | perl cpanm -L extlib
 
 =head1 Application start and stop
 
