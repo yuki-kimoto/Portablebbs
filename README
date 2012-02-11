@@ -12,3 +12,10 @@ DESCRIPTION
   - Easy setup system by Test::ModuleVersion.
     you can install CPAN module easily and can specify module version. 
 
+What you can learn from this application?
+
+  - Mojolicious frame work. routing, template, and controller
+  - SQLite
+  - DBIx::Custom
+  - How to use Test::ModuleVersion to create portable web application
+
