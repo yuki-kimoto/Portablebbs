@@ -1,6 +1,6 @@
 =head1 NAME
 
-  Portable BBS
+Portable BBS
 
 =head2 DESCRIPTION
 
@@ -18,7 +18,7 @@ C<Portable BBS> is simple web application example which have following features.
 
 =back
 
-What you can learn from this application?
+=head1 What you can learn from this application?
 
 =over 2
 
@@ -40,19 +40,19 @@ Install some moudles.
 
 =head1 Application start and stop
 
-=head Start application
+=head1 C<Start>
 
   $ extlib/bin/hypnotoad script/portablebbs
 
 Application start in backend. Port number is C<8080> by default.
 
-=head2 Restart application
+=head2 C<Restart>
 
 Restart is same command as start command
 
   $ extlib/bin/hypnotoad script/portablebbs
 
-=head2 Stop application
+=head2 C<Stop>
 
 You can stop application by C<--stop> option.
 
