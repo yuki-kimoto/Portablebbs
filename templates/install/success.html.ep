@@ -1,0 +1,5 @@
+% layout 'default', title => 'Setup success';
+
+<h2>Setup success</h2>
+
+<a href="<%= url_for '/' %>">Goto BBS</a>

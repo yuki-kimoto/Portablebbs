@@ -7,23 +7,52 @@ has 'dbi';
 sub startup {
   my $self = shift;
   
+  # Database
+  my $database_dir = $self->home->rel_file('db');
+  mkdir $database_dir unless -d $database_dir;
+  my $database = $self->home->rel_file('db/portablebbs');
+  
   # DBI
   my $dbi = DBIx::Custom->connect(
-    dsn => 'dbi:SQLite:portablebbs'
+    dsn => "dbi:SQLite:$database",
     connector => 1
   );
   $self->dbi($dbi);
   
+  # Model
+  $dbi->create_model(table => 'entry', primary_key => 'entry_id');
+  
   # Route
   my $r = $self->routes;
+  
+  # Brige
+  my $b = $r->under(sub {
+    my $self = shift;
+    
+    # Database is setupped?
+    my $path = $self->req->url->path->to_string;
+    eval { $dbi->select(table => 'entry', where => '1 = 0') };
+    if ($@) {
+      return 1 if $path eq '/install' || $path eq '/database/init';
+      $self->redirect_to('/install');
+      return 0;
+    }
+    
+    return 1;
+  });
 
-  # BBS
-  $r->get('/')->to('index#default');
-  $r->post('/entry/create')->to('entry#create');
+  # Top page
+  $b->get('/')->to('index#default');
 
-  # Install page
-  $r->get('/install')->to('install#default');
-  $r->post('/database/init')->to('database#init');
+  # Entry
+  $b->post('/entry/create')->to('entry#create');
+
+  # Install
+  $b->get('/install')->to('install#default');
+  $b->get('/install/success')->to('install#success');
+
+  # Database
+  $b->post('/database/init')->to('database#init');
 }
 
 1;

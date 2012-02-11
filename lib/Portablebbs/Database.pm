@@ -5,13 +5,17 @@ use Mojo::Base 'Mojolicious::Controller';
 sub init {
   my $self = shift;
   
-  $dbi->execute('<<EOS');
+  # Create entry table
+  $self->app->dbi->execute(<<'EOS');
 create table entry (
-  id int integer primary key autoincrement,
-  title,
-  message
+  id integer primary key autoincrement,
+  entry_id not null unique,
+  title not null,
+  message not null
 )
 EOS
+  
+  $self->redirect_to('/install/success');
 }
 
 1;
