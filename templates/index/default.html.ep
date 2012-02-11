@@ -1,25 +1,34 @@
 % layout 'default', title => 'Portable BBS';
-<h1>Short Message BBS</h1>
-<form method="post" action="<%= url_for('create') %>">
-  <div>
-    Title
-    <input type="text" name="title" >
+<h1>Portable BBS</h1>
+% if (flash('messages')) {
+  <div style="color:red">
+    <ul>
+      % for my $message (@{flash('messages')}) {
+        <li><%= $message %></li>
+      % }
+    </ul>
   </div>
-  <div>Message</div>
+% }
+<form method="post" action="<%= url_for('/entry/create') %>">
   <div>
-    <textarea name="message" cols="50" rows="10" ></textarea>
+    <b>Title:</b> 
+    %= input_tag 'title';
+  </div>
+  <div><b>Message: </b></div>
+  <div>
+    %= text_field 'message', cols => '50', rows => '10';
   </div>
   <div>
-    <input type="submit" value="Post" >
+    %= submit_button 'Post';
   </div>
 </form>
 <div>
-<% foreach my $entry_info (@$entry_infos) { %>
+% for my $entry (@$entries) {
   <div>
     <hr>
-    <div>Title: <%= $entry_info->{title} %> (<%= $entry_info->{datetime} %>)</div>
-    <div>Message</div>
-    <div><%= $entry_info->{message} %></div>
+    <div><b>Title:</b> <%= $entry->{title} %> (<%= $entry->{ctime} %>)</div>
+    <div><b>Message:</b> </div>
+    <div><%= $entry->{message} %></div>
   <div>
-<% } %>
+% }
 </div>

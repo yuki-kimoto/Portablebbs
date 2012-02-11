@@ -9,9 +9,9 @@ sub init {
   $self->app->dbi->execute(<<'EOS');
 create table entry (
   id integer primary key autoincrement,
-  entry_id not null unique,
   title not null,
-  message not null
+  message not null,
+  ctime datetime not null
 )
 EOS
   

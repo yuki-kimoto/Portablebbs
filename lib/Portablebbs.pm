@@ -1,7 +1,9 @@
 package Portablebbs;
 use Mojo::Base 'Mojolicious';
 use DBIx::Custom;
+use Validator::Custom;
 
+has validator => sub { Validator::Custom->new };
 has 'dbi';
 
 sub startup {

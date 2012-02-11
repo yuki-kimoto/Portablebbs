@@ -7,7 +7,7 @@ sub default {
   # Database is setupped
   eval { $self->app->dbi->select(table => 'entry', where => '1 = 0') };
   if ($@) { $self->render }
-  else { $self->redirect_to('/install') }
+  else { $self->render('install/installed') }
 }
 
 1;
