@@ -1,0 +1,14 @@
+NAME
+
+  Portable BBS
+
+DESCRIPTION
+
+  This is simple web application example which have following features.
+  
+  - Web framework is Mojolicious
+  - Database is SQLite
+  - O/R mapper is DBIx::Custom
+  - Easy setup system by Test::ModuleVersion.
+    you can install CPAN module easily and can specify module version. 
+
