@@ -22,13 +22,13 @@ C<Portable BBS> is simple web application example which have following features.
 
 =over 2
 
-=item * Mojolicious frame work. routing, template, and controller
+=item * C<Mojolicious> web frame work. routing, template, and controller
 
-=item * SQLite
+=item * Database access using C<SQLite> and C<DBIx::Custom>
 
-=item * DBIx::Custom
+=item * Form data validation using C<Validator::Custom>
 
-=item * How to use Test::ModuleVersion to create portable web application
+=item * How to use C<Test::ModuleVersion> to create portable web application
 
 =back
 
