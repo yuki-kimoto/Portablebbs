@@ -1,0 +1,7 @@
+% layout 'default', title => 'Get starting Portable BBS';
+
+<h2>Let's create BBS</h2>
+
+<form method="post" action="<%= url_for '/database/create' %>" >
+  %= submit_button 'Create BBS';
+</form>
