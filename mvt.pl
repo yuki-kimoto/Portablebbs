@@ -3,6 +3,11 @@ use warnings;
 use Test::ModuleVersion;
 
 my $tm = Test::ModuleVersion->new;
+$tm->comment(<<'EOS');
+Developer can create this test script by the following command
+
+  perl mvt.pl > t/module.t
+EOS
 $tm->lib(['extlib/perl5/lib']);
 $tm->modules([
   [DBI => '1.616'],

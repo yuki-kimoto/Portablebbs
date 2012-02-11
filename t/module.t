@@ -1,5 +1,14 @@
-# Created by Test::ModuleVersion 0.05
-use Test::More tests => 12;
+=pod
+
+Developer can create this test script by the following command
+
+  perl mvt.pl > t/module.t
+
+
+=cut
+
+# Created by Test::ModuleVersion 0.06
+use Test::More;
 use strict;
 use warnings;
 use ExtUtils::Installed;
@@ -23,6 +32,8 @@ sub main {
   my $require_ok;
   my $version_ok;
   my $version;
+  
+  plan tests => 12;
 
   # DBI
   $require_ok = require_ok('DBI');
@@ -74,8 +85,9 @@ sub main {
   }
 }
 
+use 5.008007;
 package Test::ModuleVersion;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 package
   Test::ModuleVersion::Object::Simple;
@@ -2650,6 +2662,7 @@ use ExtUtils::Installed;
 use Carp 'croak';
 
 sub has { __PACKAGE__->Test::ModuleVersion::Object::Simple::attr(@_) }
+has comment => '';
 has default_ignore => sub { ['Perl', 'Test::ModuleVersion'] };
 has ignore => sub { [] };
 has lib => sub { [] };
@@ -2691,8 +2704,26 @@ sub get_module_url {
 sub test_script {
   my $self = shift;
   
+  # Code
+  my $code;
+  
+  # Comment
+  my $comment = $self->comment;
+  $code .= <<"EOS" if $comment;
+=pod
+
+$comment
+
+=cut
+
+EOS
+  
+  # Reffer this module
+  $code .= "# Created by Test::ModuleVersion $Test::ModuleVersion::VERSION\n";
+
   # Test code
-  my $code = <<'EOS';
+  $code .= <<'EOS';
+use Test::More;
 use strict;
 use warnings;
 use ExtUtils::Installed;
@@ -2722,6 +2753,8 @@ sub main {
   my $require_ok;
   my $version_ok;
   my $version;
+  
+  plan tests => <%%%%%% test_count %%%%%%>;
 
 EOS
   
@@ -2765,10 +2798,7 @@ EOS
     . "main(\@ARGV);\n";
   
   # Test count
-  $code = "use Test::More tests => $test_count;\n" . $code;
-
-  # Reffer this module
-  $code = "# Created by Test::ModuleVersion $Test::ModuleVersion::VERSION\n" . $code;
+  $code =~ s/<%%%%%% test_count %%%%%%>/$test_count/e;
   
   return $code;
 }

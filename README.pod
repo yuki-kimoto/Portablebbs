@@ -40,7 +40,7 @@ Install some moudles.
 
 =head1 Application start and stop
 
-=head1 C<Start>
+=head2 C<Start>
 
   $ extlib/bin/hypnotoad script/portablebbs
 
