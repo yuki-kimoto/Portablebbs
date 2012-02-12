@@ -2,7 +2,7 @@
 
 Developer can create this test script by the following command
 
-  perl mvt.pl > t/module.t
+  perl t/mvt.pl > t/module.t
 
 
 =cut
@@ -13,7 +13,7 @@ use strict;
 use warnings;
 use ExtUtils::Installed;
 use FindBin;
-use lib "$FindBin::Bin/extlib/perl5/lib";
+use lib "$FindBin::Bin/../extlib/lib/perl5";
 sub main {
   my $command = shift;
   die qq/command "$command" is not found/
@@ -61,9 +61,9 @@ sub main {
 
   # DBIx::Custom
   $require_ok = require_ok('DBIx::Custom');
-  $version_ok = is($DBIx::Custom::VERSION, '0.2110', 'DBIx::Custom version: 0.2110');
-  push @$modules, ['DBIx::Custom' => '0.2110'];
-  push @$failed, ['DBIx::Custom' => '0.2110'] unless $require_ok && $version_ok;
+  $version_ok = is($DBIx::Custom::VERSION, '0.2111', 'DBIx::Custom version: 0.2111');
+  push @$modules, ['DBIx::Custom' => '0.2111'];
+  push @$failed, ['DBIx::Custom' => '0.2111'] unless $require_ok && $version_ok;
 
   # Mojolicious
   $require_ok = require_ok('Mojolicious');

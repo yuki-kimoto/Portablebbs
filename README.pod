@@ -36,7 +36,13 @@ C<Portable BBS> is simple web application example which have following features.
 
 Install some moudles.
 
-  $ perl t/module.t list | perl cpanm -L extlib
+  $ perl t/module.t list_fail | perl cpanm -L extlib
+
+Check all module is installed.
+
+  $ perl t/module.t
+
+If all test is passed, setup is ok.
 
 =head1 Application start and stop
 

@@ -17,12 +17,13 @@ sub startup {
   # DBI
   my $dbi = DBIx::Custom->connect(
     dsn => "dbi:SQLite:$database",
+    option => {sqlite_unicode => 1},
     connector => 1
   );
   $self->dbi($dbi);
   
   # Model
-  $dbi->create_model(table => 'entry', primary_key => 'entry_id');
+  $dbi->create_model(table => 'entry');
   
   # Route
   my $r = $self->routes;
@@ -35,7 +36,7 @@ sub startup {
     my $path = $self->req->url->path->to_string;
     eval { $dbi->select(table => 'entry', where => '1 = 0') };
     if ($@) {
-      return 1 if $path eq '/install' || $path eq '/database/init';
+      return 1 if $path eq '/install' || $path eq '/bbs/init';
       $self->redirect_to('/install');
       return 0;
     }
@@ -54,7 +55,7 @@ sub startup {
   $b->get('/install/success')->to('install#success');
 
   # Database
-  $b->post('/database/init')->to('database#init');
+  $b->post('/bbs/init')->to('bbs#init');
 }
 
 1;

@@ -25,7 +25,7 @@ sub create {
   # Create entry
   my $params = $vresult->data;
   $params->{title} = 'unknown' unless length $params->{title};
-  $self->app->dbi->model('entry')->insert($params, created_at => 'ctime');
+  $self->app->dbi->model('entry')->insert($params, ctime => 'ctime');
   
   # Redirect
   $self->redirect_to('/');

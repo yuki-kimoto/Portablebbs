@@ -1,4 +1,4 @@
-package Portablebbs::Database;
+package Portablebbs::Bbs;
 use Mojo::Base 'Mojolicious::Controller';
 
 # Create database
