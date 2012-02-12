@@ -17,6 +17,7 @@ $tm->modules([
   ['Validator::Custom' => '0.1426'],
   ['DBIx::Custom' => '0.2111'],
   [Mojolicious => '2.46'],
+  ['DBIx::Connector' => '0.47']
 ]);
 print $tm->test_script;
 

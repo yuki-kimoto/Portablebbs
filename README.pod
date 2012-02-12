@@ -47,8 +47,8 @@ If all test is passed, setup is ok.
 =head1 Application start and stop
 
 =head2 C<Start>
-
-  $ extlib/bin/hypnotoad script/portablebbs
+  $ export HYPNOTOAD_EXE="perl -Iextlib/lib/perl5 extlib/bin/hypnotoad script/portablebbs"
+  $ perl -Iextlib/lib/perl5 extlib/bin/hypnotoad script/portablebbs
 
 Application start in backend. Port number is C<8080> by default.
 
@@ -56,12 +56,12 @@ Application start in backend. Port number is C<8080> by default.
 
 Restart is same command as start command
 
-  $ extlib/bin/hypnotoad script/portablebbs
+  $  perl -Iextlib/lib/perl5 extlib/bin/hypnotoad script/portablebbs
 
 =head2 C<Stop>
 
 You can stop application by C<--stop> option.
 
-  $ extlib/bin/hypnotoad script/portablebbs --stop
+  $  perl -Iextlib/lib/perl5 extlib/bin/hypnotoad script/portablebbs --stop
 
 =cut

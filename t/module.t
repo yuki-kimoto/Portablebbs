@@ -33,7 +33,7 @@ sub main {
   my $version_ok;
   my $version;
   
-  plan tests => 12;
+  plan tests => 14;
 
   # DBI
   $require_ok = require_ok('DBI');
@@ -70,6 +70,12 @@ sub main {
   $version_ok = is($Mojolicious::VERSION, '2.46', 'Mojolicious version: 2.46');
   push @$modules, ['Mojolicious' => '2.46'];
   push @$failed, ['Mojolicious' => '2.46'] unless $require_ok && $version_ok;
+
+  # DBIx::Connector
+  $require_ok = require_ok('DBIx::Connector');
+  $version_ok = is($DBIx::Connector::VERSION, '0.47', 'DBIx::Connector version: 0.47');
+  push @$modules, ['DBIx::Connector' => '0.47'];
+  push @$failed, ['DBIx::Connector' => '0.47'] unless $require_ok && $version_ok;
 
   # Print module URLs
   if (defined $command) {
