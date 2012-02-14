@@ -48,7 +48,7 @@ If all test is passed, setup is ok.
 
 =head2 C<Start>
 
-  $ ./hypnotaod
+  $ ./hypnotoad
 
 Application start in backend. Port number is C<8080> by default.
 See L<Mojolicious> hypnotoad command about options.
@@ -57,13 +57,13 @@ You can also restart application by same command.
 
 =head2 C<Stop>
 
-  $ ./hypnotaod --stop
+  $ ./hypnotoad --stop
 
 You can stop application by C<--stop> option.
 
 =head1 Start application in development mode
 
-  ./morbo
+  $ ./morbo
 
 Application is started in C<development> mode. port is C<3000> by default.
 
