@@ -12,6 +12,8 @@ t/*.db
 Makefile
 pm_to_blib
 log/*
+!log/.gitignore
 db/*
 extlib/*
+!extlib/.gitignore
 script/hypnotoad.pid
