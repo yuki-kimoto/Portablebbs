@@ -2,23 +2,29 @@
 
 Developer can create this test script by the following command
 
-  perl t/mvt.pl > t/module.t
+  perl t/mvt.pl
 
 
 =cut
 
-# Created by Test::ModuleVersion 0.06
+# Created by Test::ModuleVersion 0.08
 use Test::More;
 use strict;
 use warnings;
 use ExtUtils::Installed;
 use FindBin;
 use lib "$FindBin::Bin/../extlib/lib/perl5";
+
 sub main {
   my $command = shift;
-  die qq/command "$command" is not found/
-    if defined $command && ($command ne 'list_fail' && $command ne 'list');
-
+  my $option = shift;
+  
+  die qq/command "$command" is unkonwn command/
+    if defined $command && $command ne 'list';
+  
+  die qq/list $option is unknown option/
+    if defined $option && $option ne '--fail';
+  
   if (defined $command) {
     my $builder = Test::More->builder;
     open my $out_fh, '>', undef;
@@ -79,12 +85,20 @@ sub main {
 
   # Print module URLs
   if (defined $command) {
-    my @ms = $command eq 'list_fail' ? @$failed
+    my $distnames = {}
+
+    ;
+    my $privates = {}
+
+    ;
+    my $tm = Test::ModuleVersion->new;
+    my @ms = $command eq 'list' && ($option || '') eq '--fail' ? @$failed
       : $command eq 'list' ? @$modules
-      : undef;
+      : [];
     for my $m (@ms) {
       my ($module, $version) = @$m;
-      my $url = Test::ModuleVersion::get_module_url($module, $version);
+      my $url = $tm->get_module_url($module, $version,
+        {distnames => $distnames, privates => $privates});
       if (defined $url) { print "$url\n" }
       else { print STDERR "$module $version is unknown\n" }
     }  
@@ -93,7 +107,7 @@ sub main {
 
 use 5.008007;
 package Test::ModuleVersion;
-our $VERSION = '0.06';
+our $VERSION = '0.08';
 
 package
   Test::ModuleVersion::Object::Simple;
@@ -2666,13 +2680,16 @@ use strict;
 use warnings;
 use ExtUtils::Installed;
 use Carp 'croak';
+use Data::Dumper;
 
 sub has { __PACKAGE__->Test::ModuleVersion::Object::Simple::attr(@_) }
 has comment => '';
+has distnames => sub { {} };
 has default_ignore => sub { ['Perl', 'Test::ModuleVersion'] };
 has ignore => sub { [] };
 has lib => sub { [] };
 has modules => sub { [] };
+has privates => sub { {} };
 
 sub detect {
   my $self = shift;
@@ -2687,21 +2704,33 @@ sub detect {
 }
 
 sub get_module_url {
-  my ($module, $version) = @_;
+  my ($self, $module, $version, $opts) = @_;
   
+  $opts ||= {};
+  my $distnames = $opts->{distnames} || {};
+  my $privates = $opts->{privates} || {};
+
   # Module
   my $module_dist = $module;
+  $module_dist = $distnames->{$module} if defined $distnames->{$module};
   $module_dist =~ s/::/-/g;
-  
-  # Get dounload URL using metaCPAN api
-  my $metacpan_api = 'http://api.metacpan.org/v0';
-  my $search = "release/_search?q=name:$module_dist-$version"
-    . "&fields=download_url,name";
-  my $http = Test::ModuleVersion::HTTP::Tiny->new;
-  my $res = $http->get("$metacpan_api/$search");
-  if ($res->{success}) {
-    my $release = Test::ModuleVersion::JSON::PP::decode_json $res->{content};
-    return $release->{hits}{hits}[0]{fields}{download_url};
+
+  if (my $url = $privates->{$module}) {
+    $url =~ s/%M/"$module_dist-$version"/e;
+    return $url;
+  }
+  else {
+    
+    # Get dounload URL using metaCPAN api
+    my $metacpan_api = 'http://api.metacpan.org/v0';
+    my $search = "release/_search?q=name:$module_dist-$version"
+      . "&fields=download_url,name";
+    my $http = Test::ModuleVersion::HTTP::Tiny->new;
+    my $res = $http->get("$metacpan_api/$search");
+    if ($res->{success}) {
+      my $release = Test::ModuleVersion::JSON::PP::decode_json $res->{content};
+      return $release->{hits}{hits}[0]{fields}{download_url};
+    }
   }
   
   return;
@@ -2737,15 +2766,22 @@ use FindBin;
 EOS
   
   # Library path
-  $code .= qq|use lib "\$FindBin::Bin/$_";\n| for @{$self->lib};
+  my $libs = ref $self->lib ? $self->lib : [$self->lib];
+  $code .= qq|use lib "\$FindBin::Bin/$_";\n| for @$libs;
   
   # Main
   $code .= <<'EOS';
+
 sub main {
   my $command = shift;
-  die qq/command "$command" is not found/
-    if defined $command && ($command ne 'list_fail' && $command ne 'list');
-
+  my $option = shift;
+  
+  die qq/command "$command" is unkonwn command/
+    if defined $command && $command ne 'list';
+  
+  die qq/list $option is unknown option/
+    if defined $option && $option ne '--fail';
+  
   if (defined $command) {
     my $builder = Test::More->builder;
     open my $out_fh, '>', undef;
@@ -2782,12 +2818,18 @@ EOS
   $code .= <<'EOS';
   # Print module URLs
   if (defined $command) {
-    my @ms = $command eq 'list_fail' ? @$failed
+    my $distnames = <%%%%%% distnames %%%%%%>
+    ;
+    my $privates = <%%%%%% privates %%%%%%>
+    ;
+    my $tm = Test::ModuleVersion->new;
+    my @ms = $command eq 'list' && ($option || '') eq '--fail' ? @$failed
       : $command eq 'list' ? @$modules
-      : undef;
+      : [];
     for my $m (@ms) {
       my ($module, $version) = @$m;
-      my $url = Test::ModuleVersion::get_module_url($module, $version);
+      my $url = $tm->get_module_url($module, $version,
+        {distnames => $distnames, privates => $privates});
       if (defined $url) { print "$url\n" }
       else { print STDERR "$module $version is unknown\n" }
     }  
@@ -2805,6 +2847,14 @@ EOS
   
   # Test count
   $code =~ s/<%%%%%% test_count %%%%%%>/$test_count/e;
+  
+  # Distribution names
+  my $distnames_code = Data::Dumper->new([$self->distnames])->Terse(1)->Indent(2)->Dump;
+  $code =~ s/<%%%%%% distnames %%%%%%>/$distnames_code/e;
+
+  # Private repositories
+  my $privates_code = Data::Dumper->new([$self->privates])->Terse(1)->Indent(2)->Dump;
+  $code =~ s/<%%%%%% privates %%%%%%>/$privates_code/e;
   
   return $code;
 }

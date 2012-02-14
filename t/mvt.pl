@@ -1,13 +1,14 @@
 use strict;
 use warnings;
 use Test::ModuleVersion;
+use FindBin;
 
 # Create module test
 my $tm = Test::ModuleVersion->new;
 $tm->comment(<<'EOS');
 Developer can create this test script by the following command
 
-  perl t/mvt.pl > t/module.t
+  perl t/mvt.pl
 EOS
 $tm->lib(['../extlib/lib/perl5']);
 $tm->modules([
@@ -19,6 +20,9 @@ $tm->modules([
   [Mojolicious => '2.46'],
   ['DBIx::Connector' => '0.47']
 ]);
-print $tm->test_script;
+my $file = "$FindBin::Bin/module.t";
+open my $fh, '>', $file
+  or die qq/Can't open file "$file": $!/;
+print $fh $tm->test_script;
 
 1;

@@ -36,7 +36,7 @@ C<Portable BBS> is simple web application example which have following features.
 
 Install some moudles.
 
-  $ perl t/module.t list_fail | perl cpanm -L extlib
+  $ perl t/module.t list --fail | perl cpanm -L extlib
 
 Check all module is installed.
 
@@ -48,24 +48,23 @@ If all test is passed, setup is ok.
 
 =head2 C<Start>
 
-  $ export HYPNOTOAD_EXE="perl -Iextlib/lib/perl5 extlib/bin/hypnotoad"
-  $ perl -Iextlib/lib/perl5 extlib/bin/hypnotoad script/portablebbs
+  $ ./hypnotaod
 
 Application start in backend. Port number is C<8080> by default.
+See L<Mojolicious> hypnotoad command about options.
 
-=head2 C<Restart>
-
-Restart is same command as start command
-
-  $ export HYPNOTOAD_EXE="perl -Iextlib/lib/perl5 extlib/bin/hypnotoad"
-  $ perl -Iextlib/lib/perl5 extlib/bin/hypnotoad script/portablebbs
+You can also restart application by same command.
 
 =head2 C<Stop>
 
+  $ ./hypnotaod --stop
+
 You can stop application by C<--stop> option.
 
-  $ export HYPNOTOAD_EXE="perl -Iextlib/lib/perl5 extlib/bin/hypnotoad"
-  $ perl -Iextlib/lib/perl5 extlib/bin/hypnotoad script/portablebbs --stop
+=head1 Start application in development mode
+
+  ./morbo
+
+Application is started in C<development> mode. port is C<3000> by default.
 
 =cut
-
