@@ -11,7 +11,7 @@ You can create this script by the following command
 =cut
 
 
-# Created by Test::ModuleVersion 0.11
+# Created by Test::ModuleVersion 0.12
 use Test::More;
 use strict;
 use warnings;
@@ -116,7 +116,7 @@ sub main {
 
 use 5.008007;
 package Test::ModuleVersion;
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 package
   Test::ModuleVersion::Object::Simple;
@@ -2738,7 +2738,7 @@ sub get_module_url {
     my $module_info = "$metacpan_api/$search";
     my $res = {};
     my $agent;
-    if ($lwp eq 'use' || $lwp eq 'auto' && eval { require LWP::UserAgent; 1})
+    if ($lwp eq 'use' || $lwp eq 'auto' && eval { require LWP::UserAgent; LWP::UserAgent->VERSION(5.802) })
     {
       require LWP::UserAgent;
       $agent = 'LWP::UserAgent';
