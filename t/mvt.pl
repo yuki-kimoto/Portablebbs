@@ -5,10 +5,17 @@ use FindBin;
 
 # Create module test
 my $tm = Test::ModuleVersion->new;
-$tm->comment(<<'EOS');
-Developer can create this test script by the following command
+$tm->before(<<'EOS');
+use 5.010001;
+
+=pod
+
+You can create this script by the following command
 
   perl t/mvt.pl
+
+=cut
+
 EOS
 $tm->lib(['../extlib/lib/perl5']);
 $tm->modules([

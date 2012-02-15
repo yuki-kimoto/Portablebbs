@@ -1,13 +1,15 @@
+use 5.010001;
+
 =pod
 
-Developer can create this test script by the following command
+You can create this script by the following command
 
   perl t/mvt.pl
 
-
 =cut
 
-# Created by Test::ModuleVersion 0.08
+
+# Created by Test::ModuleVersion 0.09
 use Test::More;
 use strict;
 use warnings;
@@ -107,7 +109,7 @@ sub main {
 
 use 5.008007;
 package Test::ModuleVersion;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 package
   Test::ModuleVersion::Object::Simple;
@@ -2683,7 +2685,7 @@ use Carp 'croak';
 use Data::Dumper;
 
 sub has { __PACKAGE__->Test::ModuleVersion::Object::Simple::attr(@_) }
-has comment => '';
+has before => '';
 has distnames => sub { {} };
 has default_ignore => sub { ['Perl', 'Test::ModuleVersion'] };
 has ignore => sub { [] };
@@ -2737,21 +2739,10 @@ sub get_module_url {
 }
 
 sub test_script {
-  my $self = shift;
+  my ($self, %opts) = @_;
   
   # Code
-  my $code;
-  
-  # Comment
-  my $comment = $self->comment;
-  $code .= <<"EOS" if $comment;
-=pod
-
-$comment
-
-=cut
-
-EOS
+  my $code = $self->before . "\n";
   
   # Reffer this module
   $code .= "# Created by Test::ModuleVersion $Test::ModuleVersion::VERSION\n";
@@ -2856,6 +2847,11 @@ EOS
   my $privates_code = Data::Dumper->new([$self->privates])->Terse(1)->Indent(2)->Dump;
   $code =~ s/<%%%%%% privates %%%%%%>/$privates_code/e;
   
+  if (my $file = $opts{output}) {
+    open my $fh, '>', $file
+      or die qq/Can't open file "$file": $!/;
+    print $fh $code;
+  }
   return $code;
 }
 
