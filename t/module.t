@@ -9,7 +9,7 @@ You can create this script by the following command
 =cut
 
 
-# Created by Test::ModuleVersion 0.09
+# Created by Test::ModuleVersion 0.10
 use Test::More;
 use strict;
 use warnings;
@@ -99,17 +99,18 @@ sub main {
       : [];
     for my $m (@ms) {
       my ($module, $version) = @$m;
+      my $error;
       my $url = $tm->get_module_url($module, $version,
-        {distnames => $distnames, privates => $privates});
+        {distnames => $distnames, privates => $privates, error => \$error});
       if (defined $url) { print "$url\n" }
-      else { print STDERR "$module $version is unknown\n" }
+      else { print STDERR "$error\n" }
     }  
   }
 }
 
 use 5.008007;
 package Test::ModuleVersion;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 package
   Test::ModuleVersion::Object::Simple;
@@ -2716,10 +2717,10 @@ sub get_module_url {
   my $module_dist = $module;
   $module_dist = $distnames->{$module} if defined $distnames->{$module};
   $module_dist =~ s/::/-/g;
-
-  if (my $url = $privates->{$module}) {
+  
+  my $url;
+  if ($url = $privates->{$module}) {
     $url =~ s/%M/"$module_dist-$version"/e;
-    return $url;
   }
   else {
     
@@ -2728,14 +2729,23 @@ sub get_module_url {
     my $search = "release/_search?q=name:$module_dist-$version"
       . "&fields=download_url,name";
     my $http = Test::ModuleVersion::HTTP::Tiny->new;
-    my $res = $http->get("$metacpan_api/$search");
-    if ($res->{success}) {
+    my $module_info = "$metacpan_api/$search";
+    my $res = $http->get($module_info);
+    my $error;
+    if ($res->{success} && !$ENV{TEST_MODULEVERSION_REQUEST_FAIL}) {
       my $release = Test::ModuleVersion::JSON::PP::decode_json $res->{content};
-      return $release->{hits}{hits}[0]{fields}{download_url};
+      $url = $release->{hits}{hits}[0]{fields}{download_url};
+      $error = "$module_dist-$version is unknown" unless defined $url;
     }
+    else {
+      my $status = $res->{status};
+      my $reason = $res->{reason};
+      $error = "Request to metaCPAN fail($status $reason): $module_info";
+    }
+    ${$opts->{error}} = $error if ref $opts->{error};
   }
   
-  return;
+  return $url;
 }
 
 sub test_script {
@@ -2819,10 +2829,11 @@ EOS
       : [];
     for my $m (@ms) {
       my ($module, $version) = @$m;
+      my $error;
       my $url = $tm->get_module_url($module, $version,
-        {distnames => $distnames, privates => $privates});
+        {distnames => $distnames, privates => $privates, error => \$error});
       if (defined $url) { print "$url\n" }
-      else { print STDERR "$module $version is unknown\n" }
+      else { print STDERR "$error\n" }
     }  
   }
 }
