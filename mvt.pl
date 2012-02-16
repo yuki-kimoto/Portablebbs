@@ -10,9 +10,9 @@ use 5.010001;
 
 =pod
 
-You can create this script by the following command
+run mvt.pl to create this module version test(t/module.t).
 
-  perl t/mvt.pl
+  perl mvt.pl
 
 =cut
 
@@ -27,9 +27,6 @@ $tm->modules([
   [Mojolicious => '2.46'],
   ['DBIx::Connector' => '0.47']
 ]);
-my $file = "$FindBin::Bin/module.t";
-open my $fh, '>', $file
-  or die qq/Can't open file "$file": $!/;
-print $fh $tm->test_script;
+$tm->test_script(output => "$FindBin::Bin/t/module.t");
 
 1;

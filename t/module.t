@@ -4,9 +4,9 @@ use 5.010001;
 
 =pod
 
-You can create this script by the following command
+run mvt.pl to create this module version test(t/module.t).
 
-  perl t/mvt.pl
+  perl mvt.pl
 
 =cut
 
