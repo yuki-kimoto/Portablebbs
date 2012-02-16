@@ -10,8 +10,6 @@ sub startup {
   my $self = shift;
   
   # Database
-  my $database_dir = $self->home->rel_file('db');
-  mkdir $database_dir unless -d $database_dir;
   my $database = $self->home->rel_file('db/portablebbs');
   
   # DBI
