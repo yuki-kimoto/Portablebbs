@@ -81,9 +81,9 @@ sub main {
 
   # Mojolicious
   $require_ok = require_ok('Mojolicious');
-  $version_ok = is($Mojolicious::VERSION, '2.46', 'Mojolicious version: 2.46');
-  push @$modules, ['Mojolicious' => '2.46'];
-  push @$failed, ['Mojolicious' => '2.46'] unless $require_ok && $version_ok;
+  $version_ok = is($Mojolicious::VERSION, '2.48', 'Mojolicious version: 2.48');
+  push @$modules, ['Mojolicious' => '2.48'];
+  push @$failed, ['Mojolicious' => '2.48'] unless $require_ok && $version_ok;
 
   # DBIx::Connector
   $require_ok = require_ok('DBIx::Connector');

@@ -38,9 +38,15 @@ Install some moudles.
 
   $ perl t/module.t list --fail | perl cpanm -L extlib
 
-Check all module is installed.
+If you don't install all module try force install.
 
-  $ perl t/module.t
+  $ perl t/module.t list --fail | perl cpanm -n -L extlib
+
+=head1 Test
+
+Run test to check setup is ok.
+
+  $ prove t
 
 If all test is passed, setup is ok.
 
@@ -50,7 +56,7 @@ If all test is passed, setup is ok.
 
   $ ./hypnotoad
 
-Application start in backend. Port number is C<8080> by default.
+Application start in backend. Port number is C<10000> by default.
 See L<Mojolicious> hypnotoad command about options.
 
 You can also restart application by same command.
@@ -66,5 +72,9 @@ You can stop application by C<--stop> option.
   $ ./morbo
 
 Application is started in C<development> mode. port is C<3000> by default.
+
+=head1 Start on windows
+
+  $ start.bat
 
 =cut

@@ -9,12 +9,18 @@ has 'dbi';
 sub startup {
   my $self = shift;
   
+  # Config
+  my $config = $self->plugin('Config');
+  use Data::Dumper;
+  warn Dumper [$config];
+  
   # Database
-  my $database = $self->home->rel_file('db/portablebbs');
+  my $db = $ENV{PORTABLEBBE_DBNAME} || "portablebbs";
+  my $dbpath = $self->home->rel_file("db/$db");
   
   # DBI
   my $dbi = DBIx::Custom->connect(
-    dsn => "dbi:SQLite:$database",
+    dsn => "dbi:SQLite:$dbpath",
     option => {sqlite_unicode => 1},
     connector => 1
   );

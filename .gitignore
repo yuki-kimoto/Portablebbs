@@ -19,3 +19,4 @@ extlib/*
 !extlib/.gitignore
 script/hypnotoad.pid
 !public/.gitignore
+script/hypnotoad.pid
