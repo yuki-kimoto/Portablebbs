@@ -4,31 +4,29 @@ Portable BBS
 
 =head2 DESCRIPTION
 
-C<Portable BBS> is simple web application example which have following features.
+C<Portable BBS> is very portable web application example.
+You can learn how to create portable web application in C<Perl>.
+
+This application have the following features.
 
 =over 2
 
-=item * Web framework is Mojolicious
+=item *
 
-=item * Database is SQLite
+Embedded preforking web Server, you can start web application in a minute.
 
-=item * O/R mapper is DBIx::Custom
+=item * 
 
-=item * Easy setup system by Test::ModuleVersion
+Version controll system by L<Test::ModuleVersion>.
+you can use whole C<CPAN> module.
 
-=back
+Module setup is very easy.
+This application use L<DBIx::Custom>, L<Validator::Custom>,
+L<DBI>, and L<DBD::SQLite>.
 
-=head1 What you can learn from this application?
+=item *
 
-=over 2
-
-=item * C<Mojolicious> web frame work. routing, template, and controller
-
-=item * Database access using C<SQLite> and C<DBIx::Custom>
-
-=item * Form data validation using C<Validator::Custom>
-
-=item * How to use C<Test::ModuleVersion> to create portable web application
+Windows support. you can run this application on windows, not only linux/unix.
 
 =back
 
