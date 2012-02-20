@@ -51,7 +51,7 @@ Run test to check setup is ok.
 
 If all test is passed, setup is ok.
 
-=head1 Application start and stop
+=head1 Application management
 
 =head2 Start
 
