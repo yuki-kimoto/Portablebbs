@@ -51,9 +51,9 @@ sub main {
 
   # DBI
   $require_ok = require_ok('DBI');
-  $version_ok = is($DBI::VERSION, '1.616', 'DBI version: 1.616');
-  push @$modules, ['DBI' => '1.616'];
-  push @$failed, ['DBI' => '1.616'] unless $require_ok && $version_ok;
+  $version_ok = is($DBI::VERSION, '1.617', 'DBI version: 1.617');
+  push @$modules, ['DBI' => '1.617'];
+  push @$failed, ['DBI' => '1.617'] unless $require_ok && $version_ok;
 
   # DBD::SQLite
   $require_ok = require_ok('DBD::SQLite');
@@ -81,9 +81,9 @@ sub main {
 
   # Mojolicious
   $require_ok = require_ok('Mojolicious');
-  $version_ok = is($Mojolicious::VERSION, '2.48', 'Mojolicious version: 2.48');
-  push @$modules, ['Mojolicious' => '2.48'];
-  push @$failed, ['Mojolicious' => '2.48'] unless $require_ok && $version_ok;
+  $version_ok = is($Mojolicious::VERSION, '2.51', 'Mojolicious version: 2.51');
+  push @$modules, ['Mojolicious' => '2.51'];
+  push @$failed, ['Mojolicious' => '2.51'] unless $require_ok && $version_ok;
 
   # DBIx::Connector
   $require_ok = require_ok('DBIx::Connector');

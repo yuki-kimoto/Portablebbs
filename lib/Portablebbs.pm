@@ -11,8 +11,6 @@ sub startup {
   
   # Config
   my $config = $self->plugin('Config');
-  use Data::Dumper;
-  warn Dumper [$config];
   
   # Database
   my $db = $ENV{PORTABLEBBE_DBNAME} || "portablebbs";

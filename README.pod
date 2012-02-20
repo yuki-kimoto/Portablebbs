@@ -36,17 +36,18 @@ C<Portable BBS> is simple web application example which have following features.
 
 Install some moudles.
 
-  $ perl t/module.t list --fail | perl cpanm -L extlib
+  perl cpanm -l extlib Module::CoreList
+  perl -Iextlib/lib/perl5 t/module.t list --fail | perl cpanm -L extlib
 
 If you don't install all module try force install.
 
-  $ perl t/module.t list --fail | perl cpanm -n -L extlib
+  perl -Iextlib/lib/perl5 t/module.t list --fail | perl cpanm -n -L extlib
 
 =head1 Test
 
 Run test to check setup is ok.
 
-  $ prove t
+  prove t
 
 If all test is passed, setup is ok.
 
@@ -54,7 +55,7 @@ If all test is passed, setup is ok.
 
 =head2 C<Start>
 
-  $ ./hypnotoad
+  ./hypnotoad
 
 Application start in backend. Port number is C<10000> by default.
 See L<Mojolicious> hypnotoad command about options.
@@ -63,18 +64,24 @@ You can also restart application by same command.
 
 =head2 C<Stop>
 
-  $ ./hypnotoad --stop
+  ./hypnotoad --stop
 
 You can stop application by C<--stop> option.
 
-=head1 Start application in development mode
+=head2 Start in development
 
-  $ ./morbo
+  ./morbo
 
 Application is started in C<development> mode. port is C<3000> by default.
 
-=head1 Start on windows
+=head1 Windows support
 
-  $ start.bat
+=head2 Start
+
+  set MOJO_MODE=production
+  perl script/portablebbs daemon --listen=http://*:10000
+
+If you want to run background,
+you can register this application as windows service.
 
 =cut

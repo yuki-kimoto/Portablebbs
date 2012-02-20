@@ -1,10 +1,10 @@
-use Mojo::Base -strict;
-
-use Test::More 'no_plan';
-use Test::Mojo;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/../extlib/lib/perl5";
+
+use Mojo::Base -strict;
+use Test::More 'no_plan';
+use Test::Mojo;
 
 $ENV{PORTABLEBBE_DBNAME} = 'portablebbs_test';
 
