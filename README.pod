@@ -53,7 +53,7 @@ If all test is passed, setup is ok.
 
 =head1 Application start and stop
 
-=head2 C<Start>
+=head2 Start
 
   ./hypnotoad
 
@@ -62,7 +62,7 @@ See L<Mojolicious> hypnotoad command about options.
 
 You can also restart application by same command.
 
-=head2 C<Stop>
+=head2 Stop
 
   ./hypnotoad --stop
 
