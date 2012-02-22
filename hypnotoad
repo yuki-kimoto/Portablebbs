@@ -3,4 +3,4 @@
 DIR=$(dirname $0)
 PERL5LIB="$DIR/extlib/lib/perl5"
 export PERL5LIB
-$DIR/extlib/bin/hypnotoad $DIR/portablebbs "$*"
+$DIR/extlib/bin/hypnotoad $DIR/script/portablebbs "$*"

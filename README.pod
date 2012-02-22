@@ -78,7 +78,7 @@ Application is started in C<development> mode. port is C<3000> by default.
 =head2 Start
 
   set MOJO_MODE=production
-  perl portablebbs daemon --listen=http://*:10000
+  perl script/portablebbs daemon --listen=http://*:10000
 
 If you want to run background,
 you can register this application as windows service.
