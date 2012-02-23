@@ -55,8 +55,8 @@ If all test is passed, setup is ok.
 
   ./hypnotoad
 
-Application start in backend. Port number is C<10000> by default.
-If you change port number, edit C<portablebbs.conf>.
+Application start in backend. Port is C<10000> by default.
+If you change port, edit C<portablebbs.conf>.
 See also L<Mojolicious> C<hypnotoad> command.
 
 You can also restart application by same command.
@@ -77,10 +77,11 @@ Application is started in C<development> mode. port is C<3000> by default.
 
 =head2 Start
 
-  set MOJO_MODE=production
-  perl script/portablebbs daemon --listen=http://*:10000
+  daemon.bat
 
-If you want to run background,
-you can register this application as windows service.
+Click C<daemon.bat>.
+Application start.
+Port is C<10000> by default.
+If you change port, edit C<daemon.bat>.
 
 =cut
