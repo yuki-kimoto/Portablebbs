@@ -49,13 +49,13 @@ Run test to check setup is ok.
 
 If all test is passed, setup is ok.
 
-=head1 Application management
+=head1 Application management (Linux/Unix)
 
 =head2 Start
 
   ./hypnotoad
 
-Application start in backend. Port is C<10000> by default.
+Application start in back ground. Port is C<10000> by default.
 If you change port, edit C<portablebbs.conf>.
 See also L<Mojolicious> C<hypnotoad> command.
 
@@ -67,21 +67,38 @@ You can also restart application by same command.
 
 You can stop application by C<--stop> option.
 
-=head2 Start in development
+=head1 Application management (Windows)
+
+=head2 Start
+
+  perl winstart.pl
+
+Application start in back ground using L<Mojo::Server::Daemon>.
+Port is C<10000> by default.
+
+If you change port, pass some arguments.
+
+  perl winstart.pl --listen=http://*:10000
+
+This is same as L<Mojolicious::Command::daemon> command arguments.
+
+If C<winstart.pl> fail for some bug, you can start application foreground
+
+  set MOJO_MODE=production
+  start perl script/portablebbs daemon --listen=http://*:10000
+
+=head2 Stop
+
+  perl winstop.pl
+
+Application stop.
+
+=head1 Application management (Developer)
+
+=head2 Start
 
   ./morbo
 
 Application is started in C<development> mode. port is C<3000> by default.
-
-=head1 Windows support
-
-=head2 Start
-
-  daemon.bat
-
-Click C<daemon.bat>.
-Application start.
-Port is C<10000> by default.
-If you change port, edit C<daemon.bat>.
 
 =cut

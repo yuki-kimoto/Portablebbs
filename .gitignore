@@ -20,3 +20,4 @@ extlib/*
 script/hypnotoad.pid
 !public/.gitignore
 script/hypnotoad.pid
+winstart.pid
