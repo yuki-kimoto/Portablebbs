@@ -35,11 +35,7 @@ Windows support. you can run this application on windows, not only linux/unix.
 Install some moudles.
 
   perl cpanm -l extlib Module::CoreList
-  perl t/module.t list --fail | perl -Iextlib/lib/perl5 cpanm -L extlib
-
-If you don't install all module try force install.
-
-  perl t/module.t list --fail | perl -Iextlib/lib/perl5 cpanm -n -L extlib
+  perl t/module.t list | perl -Iextlib/lib/perl5 cpanm -n -L extlib
 
 =head1 Test
 
