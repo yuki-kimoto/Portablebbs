@@ -11,7 +11,7 @@ $ENV{MOJO_MODE} //= 'production';
 my $old_wperl_pids = get_wperl_pids();
 
 # Check if wperl exists
-system('wperl') == 0 or die "wper is not found";
+system('wperl') == 0 or die "wperl is not found";
 
 # Check if application script is exists
 my $app_path = "$FindBin::Bin/script/$app";
@@ -57,7 +57,7 @@ sub get_wperl_pids {
 sub get_new_wperl_pid {
   my ($old_pids, $new_pids) = @_;
   
-  # Get new wper pid
+  # Get new wperl pid
   my $wperl_pid;
   for my $pid (keys %$new_pids) {
     unless ($old_pids->{$pid}) {
