@@ -11,8 +11,8 @@ $ENV{PORTABLEBBE_DBNAME} = 'portablebbs_test';
 use_ok 'Portablebbs';
 my $t = Test::Mojo->new('Portablebbs');
 
-# Install
-$t->get_ok('/install');
+# Setup
+$t->get_ok('/setup');
 $t->post_form_ok('/bbs/init');
 
 # Create entry

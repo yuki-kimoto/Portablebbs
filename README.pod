@@ -1,100 +1,94 @@
-=head1 NAME
-
 Portable BBS
 
-=head2 DESCRIPTION
-
-C<Portable BBS> is very portable web application example.
-You can learn how to create portable web application in C<Perl>.
+  "Portable BBS" is very portable web application example in "Perl".
+  You can learn how to create portable web application.
 
 This application have the following features.
 
-=over 2
+  - Embedded preforking web Server, you can start web application in a minute.
+  - Version controll system by "Test::ModuleVersion".
+    you can use all of "CPAN" modules easily.
+  - Module installation is very easy.
+    This application use DBIx::Custom, Validator::Custom
+    DBI, and DBD::SQLite.
+  - Windows support. you can run this application on windows, not only linux/unix.
+    wperl.exe must be installed. Active Perl contains wperl.exe by default.
 
-=item *
+Setup
 
-Embedded preforking web Server, you can start web application in a minute.
+  Install some moudles.
 
-=item * 
+    perl cpanm -l extlib Module::CoreList
+    perl t/module.t list | perl -Iextlib/lib/perl5 cpanm -n -L extlib
 
-Version controll system by L<Test::ModuleVersion>.
-you can use whole C<CPAN> module.
+  If you reinstall install-failed modules, the following command is useful and fast.
+  
+    perl t/module.t list --fail | perl -Iextlib/lib/perl5 cpanm -n -L extlib
 
-Module setup is very easy.
-This application use L<DBIx::Custom>, L<Validator::Custom>,
-L<DBI>, and L<DBD::SQLite>.
+Test
 
-=item *
+  Run test to check setup is ok.
 
-Windows support. you can run this application on windows, not only linux/unix.
+    prove t
 
-=back
+  If all test is passed, setup is ok.
 
-=head1 Setup
+Application start/stop (Linux/Unix)
 
-Install some moudles.
+  Start
 
-  perl cpanm -l extlib Module::CoreList
-  perl t/module.t list | perl -Iextlib/lib/perl5 cpanm -n -L extlib
+      ./portablebbs
 
-=head1 Test
+    Application start in back ground. Port is "10000" by default.
+    You can access appliaction on the following URL
+    
+      http://localhost:10000
+    
+    If you change port, edit "portablebbs.conf".
+    See also Mojolicious "hypnotoad" command.
 
-Run test to check setup is ok.
+    You can also restart application by same command.
 
-  prove t
+  Stop
 
-If all test is passed, setup is ok.
+      ./portablebbs --stop
 
-=head1 Application management (Linux/Unix)
+    You can stop application by "--stop" option.
 
-=head2 Start
+Application start/stop (Windows)
 
-  ./hypnotoad
+  Start
 
-Application start in back ground. Port is C<10000> by default.
-If you change port, edit C<portablebbs.conf>.
-See also L<Mojolicious> C<hypnotoad> command.
+      perl portablebbs_winstart.pl
 
-You can also restart application by same command.
+    Application start in back ground using "Mojo::Server::Daemon"
+    Port is "10000" by default.
+    You can access appliaction on the following URL
+    
+      http://localhost:10000
 
-=head2 Stop
+    If you change port, pass some arguments.
 
-  ./hypnotoad --stop
+      perl portablebbs_winstart.pl --listen=http://*:10000
 
-You can stop application by C<--stop> option.
+    This is same as "Mojolicious::Command::daemon" command arguments.
 
-=head1 Application management (Windows)
+    If "portablebbs_winstart.pl" fail for some reason, you can start application foreground
 
-=head2 Start
+      set MOJO_MODE=production
+      start perl script/portablebbs daemon --listen=http://*:10000
 
-  perl winstart.pl
+  Stop
 
-Application start in back ground using L<Mojo::Server::Daemon>.
-Port is C<10000> by default.
+      perl portablebbs_winstop.pl
 
-If you change port, pass some arguments.
+    Application stop.
 
-  perl winstart.pl --listen=http://*:10000
+Application start on development mode (for developer)
 
-This is same as L<Mojolicious::Command::daemon> command arguments.
+    ./morbo
 
-If C<winstart.pl> fail for some bug, you can start application foreground
-
-  set MOJO_MODE=production
-  start perl script/portablebbs daemon --listen=http://*:10000
-
-=head2 Stop
-
-  perl winstop.pl
-
-Application stop.
-
-=head1 Application management (Developer)
-
-=head2 Start
-
-  ./morbo
-
-Application is started in C<development> mode. port is C<3000> by default.
-
-=cut
+  Application is started in "development" mode. port is "3000" by default.
+  You can access appliaction on the following URL
+    
+    http://localhost:3000

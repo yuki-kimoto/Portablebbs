@@ -1,0 +1,34 @@
+% layout 'default', title => 'Portable BBS';
+<h1>Portable BBS</h1>
+% if (flash('messages')) {
+  <div style="color:red">
+    <ul>
+      % for my $message (@{flash('messages')}) {
+        <li><%= $message %></li>
+      % }
+    </ul>
+  </div>
+% }
+<form method="post" action="<%= url_for('/create-entry') %>">
+  <div>
+    <b>Title:</b> 
+    %= input_tag 'title';
+  </div>
+  <div><b>Message: </b></div>
+  <div>
+    %= text_field 'message', cols => '50', rows => '10';
+  </div>
+  <div>
+    %= submit_button 'Post';
+  </div>
+</form>
+<div>
+% for my $entry (@$entries) {
+  <div>
+    <hr>
+    <div><b>Title:</b> <%= $entry->{title} %> (<%= $entry->{ctime} %>)</div>
+    <div><b>Message:</b> </div>
+    <div><%= $entry->{message} %></div>
+  <div>
+% }
+</div>
