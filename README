@@ -20,6 +20,10 @@ Setup
 
     perl cpanm -l extlib Module::CoreList
     perl t/module.t list | perl -Iextlib/lib/perl5 cpanm -n -L extlib
+    
+  Note: If you install these modules in windows, portablebbs directory
+  should not contain space character
+  such as "C:\Documents and Settings\kimoto\desctop\portablebbs".
 
   If you reinstall install-failed modules, the following command is useful and fast.
   
