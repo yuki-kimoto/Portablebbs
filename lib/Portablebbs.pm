@@ -27,37 +27,35 @@ sub startup {
   # Model
   $dbi->create_model(table => 'entry');
   
-  # Route
+  # Routes
   my $r = $self->routes;
-  
-  # Brige
-  my $b = $r->under(sub {
-    my $self = shift;
+  {
+    # Bridge
+    my $r = $r->under(sub {
+      my $self = shift;
+      
+      # Database is setupped?
+      my $path = $self->req->url->path->to_string;
+      eval { $dbi->select(table => 'entry', where => '1 = 0') };
+      if ($@) {
+        return 1 if $path eq '/setup' || $path eq '/init-bbs';
+        $self->redirect_to('/setup');
+        return 0;
+      }
+      
+      return 1;
+    });
     
-    # Database is setupped?
-    my $path = $self->req->url->path->to_string;
-    eval { $dbi->select(table => 'entry', where => '1 = 0') };
-    if ($@) {
-      return 1 if $path eq '/install' || $path eq '/bbs/init';
-      $self->redirect_to('/install');
-      return 0;
+    {
+      my $r = $r->route->to('main#');
+
+      $r->get('/')->to('#home');
+      $r->get('/setup')->to('#setup');
+
+      $r->post('/init-bbs')->to('#init_bbs');
+      $r->post('/create-entry')->to('#create_entry');
     }
-    
-    return 1;
-  });
-
-  # Top page
-  $b->get('/')->to('index#default');
-
-  # Entry
-  $b->post('/entry/create')->to('entry#create');
-
-  # Install
-  $b->get('/install')->to('install#default');
-  $b->get('/install/success')->to('install#success');
-
-  # Database
-  $b->post('/bbs/init')->to('bbs#init');
+  }
 }
 
 1;

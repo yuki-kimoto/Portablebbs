@@ -11,7 +11,7 @@ run mvt.pl to create this module version test(t/module.t).
 =cut
 
 
-# Created by Test::ModuleVersion 0.12
+# Created by Test::ModuleVersion 0.15
 use Test::More;
 use strict;
 use warnings;
@@ -81,9 +81,9 @@ sub main {
 
   # Mojolicious
   $require_ok = require_ok('Mojolicious');
-  $version_ok = is($Mojolicious::VERSION, '2.51', 'Mojolicious version: 2.51');
-  push @$modules, ['Mojolicious' => '2.51'];
-  push @$failed, ['Mojolicious' => '2.51'] unless $require_ok && $version_ok;
+  $version_ok = is($Mojolicious::VERSION, '2.82', 'Mojolicious version: 2.82');
+  push @$modules, ['Mojolicious' => '2.82'];
+  push @$failed, ['Mojolicious' => '2.82'] unless $require_ok && $version_ok;
 
   # DBIx::Connector
   $require_ok = require_ok('DBIx::Connector');
@@ -105,18 +105,20 @@ sub main {
       : [];
     for my $m (@ms) {
       my ($module, $version) = @$m;
-      my $error;
-      my $url = $tm->get_module_url($module, $version,
-        {distnames => $distnames, privates => $privates, error => \$error, lwp => $lwp});
+      my $mu = Test::ModuleVersion::ModuleURL->new;
+      $mu->distnames($distnames);
+      $mu->privates($privates);
+      $mu->lwp($lwp);
+      my $url = $mu->get($module, $version);
       if (defined $url) { print "$url\n" }
-      else { print STDERR "$error\n" }
+      else { print STDERR $mu->error . "\n" }
     }  
   }
 }
 
 use 5.008007;
 package Test::ModuleVersion;
-our $VERSION = '0.12';
+our $VERSION = '0.15';
 
 package
   Test::ModuleVersion::Object::Simple;
@@ -2683,42 +2685,25 @@ sub incr_reset {
     $self->{incr_parsing} = 0;
 }
 
-package Test::ModuleVersion;
+package
+  Test::ModuleVersion::ModuleURL;
 our @ISA = ('Test::ModuleVersion::Object::Simple');
 use strict;
 use warnings;
-use ExtUtils::Installed;
-use Carp 'croak';
-use Data::Dumper;
-
 sub has { __PACKAGE__->Test::ModuleVersion::Object::Simple::attr(@_) }
-has before => '';
+
 has distnames => sub { {} };
-has default_ignore => sub { ['Perl', 'Test::ModuleVersion'] };
-has ignore => sub { [] };
-has lib => sub { [] };
-has modules => sub { [] };
 has privates => sub { {} };
+has 'error';
+has lwp => 'auto';
 
-sub detect {
-  my $self = shift;
-  
-  # Detect installed modules
-  my $ei = ExtUtils::Installed->new;
-  my $modules = [];
-  push @$modules, [$_ => $ei->version($_)] for sort $ei->modules;
-  $self->modules($modules);
-  
-  return $self;
-}
-
-sub get_module_url {
+sub get {
   my ($self, $module, $version, $opts) = @_;
   
   $opts ||= {};
-  my $distnames = $opts->{distnames} || {};
-  my $privates = $opts->{privates} || {};
-  my $lwp = $opts->{lwp} || 'auto';
+  my $distnames = $self->distnames;
+  my $privates = $self->privates;
+  my $lwp = $self->lwp;
 
   # Module
   my $module_dist = $module;
@@ -2772,10 +2757,45 @@ sub get_module_url {
     else {
       $error = "Request to metaCPAN fail($res->{status_line}):$agent:$module_info";
     }
-    ${$opts->{error}} = $error if ref $opts->{error};
+    $self->error($error);
   }
   
   return $url;
+}
+
+
+package Test::ModuleVersion;
+our @ISA = ('Test::ModuleVersion::Object::Simple');
+use strict;
+use warnings;
+use ExtUtils::Installed;
+use Carp 'croak';
+use Data::Dumper;
+
+sub has { __PACKAGE__->Test::ModuleVersion::Object::Simple::attr(@_) }
+has before => '';
+has distnames => sub { {} };
+has default_ignore => sub { ['Perl', 'Test::ModuleVersion'] };
+has lib => sub { [] };
+has modules => sub { [] };
+has privates => sub { {} };
+
+sub detect {
+  my ($self, %opts) = @_;
+  my $ignore = $opts{ignore} || [];
+  
+  # Detect installed modules
+  my $ei = ExtUtils::Installed->new;
+  my @modules;
+  for my $module (sort $ei->modules) {
+    next if grep { $module eq $_ } @$ignore;
+    eval "require $module";
+    no strict 'refs';
+    my $version = ${"${module}::VERSION"};
+    push @modules, [$module => $version] if length $version;
+  }
+
+  return \@modules;
 }
 
 sub test_script {
@@ -2844,8 +2864,6 @@ EOS
   my $test_count = 0;
   for my $m (@{$self->modules}) {
     my ($module, $version) = @$m;
-    next if grep { $module eq $_ } @{$self->default_ignore};
-    next if grep { $module eq $_ } @{$self->ignore};
     $code .= "  # $module\n"
       . "  \$require_ok = require_ok('$module');\n"
       . "  \$version_ok = is(\$${module}::VERSION, '$version', '$module version: $version');\n"
@@ -2868,11 +2886,13 @@ EOS
       : [];
     for my $m (@ms) {
       my ($module, $version) = @$m;
-      my $error;
-      my $url = $tm->get_module_url($module, $version,
-        {distnames => $distnames, privates => $privates, error => \$error, lwp => $lwp});
+      my $mu = Test::ModuleVersion::ModuleURL->new;
+      $mu->distnames($distnames);
+      $mu->privates($privates);
+      $mu->lwp($lwp);
+      my $url = $mu->get($module, $version);
       if (defined $url) { print "$url\n" }
-      else { print STDERR "$error\n" }
+      else { print STDERR $mu->error . "\n" }
     }  
   }
 }

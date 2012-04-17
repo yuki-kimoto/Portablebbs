@@ -1,0 +1,10 @@
+% layout 'default', title => 'Get starting Portable BBS';
+
+% if (stash('setup_done')) {
+  Setup is done.
+% } else {
+  <h2>Let's create BBS</h2>
+  <form method="post" action="<%= url_for '/init-bbs' %>" >
+    %= submit_button 'Create BBS';
+  </form>
+% }

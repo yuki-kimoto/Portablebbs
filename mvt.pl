@@ -24,7 +24,7 @@ $tm->modules([
   ['Object::Simple' => '3.0625'],
   ['Validator::Custom' => '0.1426'],
   ['DBIx::Custom' => '0.2111'],
-  [Mojolicious => '2.51'],
+  [Mojolicious => '2.82'],
   ['DBIx::Connector' => '0.47']
 ]);
 $tm->test_script(output => "$FindBin::Bin/t/module.t");
