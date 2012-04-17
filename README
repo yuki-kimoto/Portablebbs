@@ -59,7 +59,7 @@ Application start/stop (Linux/Unix)
 
     You can stop application by "--stop" option.
 
-Application start/stop (Windows)
+Application start/stop
 
   Start
 
@@ -76,8 +76,10 @@ Application start/stop (Windows)
       perl portablebbs_winstart.pl --listen=http://*:10000
 
     This is same as "Mojolicious::Command::daemon" command arguments.
-
-    If "portablebbs_winstart.pl" fail for some reason, you can start application foreground
+    
+    Note that portablebbs_winstart.pl need "tasklist" command
+    (tasklist is installed in Windows 7+ by default).
+    If "portablebbs_winstart.pl" fail, you can start application foreground
 
       set MOJO_MODE=production
       start perl script/portablebbs daemon --listen=http://*:10000

@@ -13,9 +13,9 @@ my $t = Test::Mojo->new('Portablebbs');
 
 # Setup
 $t->get_ok('/setup');
-$t->post_form_ok('/bbs/init');
+$t->post_form_ok('/init-bbs');
 
 # Create entry
-$t->post_form_ok('/entry/create', {title => 'foo', message => 'bar'});
+$t->post_form_ok('/create-entry', {title => 'foo', message => 'bar'});
 $t->get_ok('/')->content_like(qr/foo/)->content_like(qr/bar/);
 
